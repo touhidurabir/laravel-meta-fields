@@ -1,0 +1,40 @@
+{
+    "name": "touhidurabir/laravel-meta-fields",
+    "description": "A laravel package to handle model specific additional meta fields in an elegant way.",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Touhidurabir\\MetaFields\\": "src/"
+        }
+    },
+    "autoload-dev" : {
+        "psr-4" : {
+            "Touhidurabir\\MetaFields\\Tests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Touhidur Rahman",
+            "email": "abircse06@gmail.com"
+        }
+    ],
+    "require": {
+        "illuminate/database": "^8.61",
+        "illuminate/support": "^8.61",
+        "illuminate/contracts": "^8.61",
+        "illuminate/events": "^8.61",
+        "touhidurabir/laravel-model-uuid": "^1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5",
+        "orchestra/testbench": "^6.21"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Touhidurabir\\MetaFields\\MetaFieldsServiceProvider"
+            ]
+        }
+    }
+}

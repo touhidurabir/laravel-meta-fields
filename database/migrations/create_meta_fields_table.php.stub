@@ -1,0 +1,68 @@
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CreateMetaFieldsTable extends Migration {
+
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up() {
+
+        $tableName = config('meta-field.table');
+
+        $this->verifyTableName($tableName);
+
+        if ( Schema::hasTable($tableName) ) {
+
+            throw new \Exception("Error: a table of name {$table} already exists in database.");
+        }
+
+        Schema::create($tableName, function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('uuid')->unique()->nullable();
+            $table->morphs('metable');
+            $table->text('metas')->nullable();
+            $table->boolean('status')->default(true);
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
+    }
+
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down() {
+
+        $tableName = config('meta-field.table');
+
+        $this->verifyTableName($tableName);
+
+        Schema::drop($tableName);
+    }
+
+
+    /**
+     * Reverse the migrations.
+     *
+     * @param  string $table
+     * @return void
+     * 
+     * @throws \Exception
+     */
+    protected function verifyTableName(string $table) {
+
+        if ( ! $table ) {
+            throw new \Exception("Error: meta field table not defined in config/meta-fields.php. Make sure that config/meta-fields.php loaded properly and table defined there. Run [php artisan config:clear] and try again.");
+        }
+    }
+
+}
