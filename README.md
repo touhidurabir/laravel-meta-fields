@@ -1,4 +1,4 @@
-# Laravel Model UUID
+# Laravel Meta Fields
 
 A php package for laravel framework to handle model meta data in a elegant way. 
 
