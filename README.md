@@ -12,7 +12,7 @@ composer require touhidurabir/laravel-meta-fields
 
 To publish the config and migration file:
 ```bash
-php artisan vendor:publish --provider="Touhidurabir\ModelRepository\ModelRepositoryServiceProvider"
+php artisan vendor:publish --provider="Touhidurabir\MetaFields\MetaFieldsServiceProvider"
 ```
 
 ## Configuration
