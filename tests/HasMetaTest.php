@@ -7,15 +7,13 @@ use Exception;
 use Orchestra\Testbench\TestCase;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Database\Eloquent\Model;
 use Touhidurabir\MetaFields\Models\MetaField;
 use Touhidurabir\MetaFields\Tests\App\Models\User;
 use Touhidurabir\MetaFields\Tests\App\Models\Profile;
 use Touhidurabir\MetaFields\Tests\Traits\LaravelTestBootstrapping;
 
-
-class HasMetaTest extends TestCase {
-
+class HasMetaTest extends TestCase
+{
     use LaravelTestBootstrapping;
 
     /**
@@ -24,7 +22,8 @@ class HasMetaTest extends TestCase {
      * @param  Illuminate\Foundation\Application $app
      * @return void
      */
-    protected function defineEnvironment($app) {
+    protected function defineEnvironment($app)
+    {
 
         // Setup default database to use sqlite :memory:
         $app['config']->set('database.default', 'testbench');
@@ -46,15 +45,16 @@ class HasMetaTest extends TestCase {
      *
      * @return void
      */
-    protected function defineDatabaseMigrations() {
+    protected function defineDatabaseMigrations()
+    {
 
         include_once(__DIR__ . '/../database/migrations/create_meta_fields_table.php.stub');
 
         $this->loadMigrationsFrom(__DIR__ . '/App/database/migrations');
-        
+
         $this->artisan('migrate', ['--database' => 'testbench'])->run();
 
-        (new \CreateMetaFieldsTable)->up();
+        (new \CreateMetaFieldsTable())->up();
 
         $this->beforeApplicationDestroyed(function () {
             $this->artisan('migrate:rollback', ['--database' => 'testbench'])->run();
@@ -66,10 +66,11 @@ class HasMetaTest extends TestCase {
      * @test
      */
     #[Test]
-    public function the_model_use_has_meta_will_have_metas_relation_exists() {
+    public function the_model_use_has_meta_will_have_metas_relation_exists()
+    {
 
-        $user = new User;
-        
+        $user = new User();
+
         $this->assertNotNull($user->metas);
         $this->assertInstanceOf(Collection::class, $user->metas);
         $this->assertInstanceOf(MorphMany::class, $user->metas());
@@ -80,7 +81,8 @@ class HasMetaTest extends TestCase {
      * @test
      */
     #[Test]
-    public function the_storeMeta_will_push_meta_data_with_proper_relation_mapping() {
+    public function the_storeMeta_will_push_meta_data_with_proper_relation_mapping()
+    {
 
         $user = User::create(['email' => 'testuser1@test.com', 'password' => '123456']);
         $meta = $user->storeMeta(['bio' => 'some bio', 'dob' => '12-12-1990']);
@@ -94,7 +96,8 @@ class HasMetaTest extends TestCase {
      * @test
      */
     #[Test]
-    public function the_storeMeta_will_push_multiple_meta_data_if_allowed() {
+    public function the_storeMeta_will_push_multiple_meta_data_if_allowed()
+    {
 
         $user = User::create(['email' => 'testuser1@test.com', 'password' => '123456']);
         $user->storeMeta(['bio' => 'some bio', 'dob' => '12-12-1990']);
@@ -108,7 +111,8 @@ class HasMetaTest extends TestCase {
      * @test
      */
     #[Test]
-    public function the_storeMeta_will_not_push_multiple_meta_data_if_not_allowed() {
+    public function the_storeMeta_will_not_push_multiple_meta_data_if_not_allowed()
+    {
 
         $profile = Profile::create(['first_name' => 'first', 'last_name' => 'last']);
         $profile->storeMeta(['bio' => 'some bio', 'dob' => '12-12-1990']);
@@ -125,11 +129,12 @@ class HasMetaTest extends TestCase {
      * @test
      */
     #[Test]
-    public function the_storeMeta_will_update_existing_one_on_multipe_call_if_multipe_not_allowed() {
+    public function the_storeMeta_will_update_existing_one_on_multipe_call_if_multipe_not_allowed()
+    {
 
         $profile = Profile::create(['first_name' => 'first', 'last_name' => 'last']);
         $profile->storeMeta(['bio' => 'some bio', 'dob' => '12-12-1990']);
-        
+
         $meta = $profile->storeMeta(['bio' => 'update bio', 'dob' => '12-12-1990']);
 
         $this->assertEquals($meta->getRawOriginal('metas'), json_encode(['bio' => 'update bio', 'dob' => '12-12-1990']));
@@ -140,7 +145,8 @@ class HasMetaTest extends TestCase {
      * @test
      */
     #[Test]
-    public function the_updateMeta_will_throw_exception_if_multiple_allowed() {
+    public function the_updateMeta_will_throw_exception_if_multiple_allowed()
+    {
 
         $user = User::create(['email' => 'testuser1@test.com', 'password' => '123456']);
         $user->storeMeta(['bio' => 'some bio', 'dob' => '12-12-1990']);
@@ -154,11 +160,12 @@ class HasMetaTest extends TestCase {
      * @test
      */
     #[Test]
-    public function the_updateMeta_will_update_or_create_if_multipe_now_allowed() {
+    public function the_updateMeta_will_update_or_create_if_multipe_now_allowed()
+    {
 
         $profile = Profile::create(['first_name' => 'first', 'last_name' => 'last']);
         $profile->updateMeta(['bio' => 'some bio', 'dob' => '12-12-1990']);
-        
+
         $this->assertCount(1, $profile->metas);
 
         $meta = $profile->updateMeta(['bio' => 'updated bio', 'dob' => '12-12-1990']);
@@ -173,12 +180,13 @@ class HasMetaTest extends TestCase {
      * @test
      */
     #[Test]
-    public function the_deleteMeta_will_delete_meta_as_soft_delete() {
+    public function the_deleteMeta_will_delete_meta_as_soft_delete()
+    {
 
         $user = User::create(['email' => 'testuser1@test.com', 'password' => '123456']);
         $user->storeMeta(['bio' => 'some bio', 'dob' => '12-12-1990']);
         $user->deleteMeta();
-        
+
         $this->assertCount(0, $user->metas);
         $this->assertCount(1, $user->metas()->withTrashed()->get());
     }
@@ -188,22 +196,24 @@ class HasMetaTest extends TestCase {
      * @test
      */
     #[Test]
-    public function the_deleteMeta_will_force_delete_metas_if_instructed_so() {
+    public function the_deleteMeta_will_force_delete_metas_if_instructed_so()
+    {
 
         $user = User::create(['email' => 'testuser1@test.com', 'password' => '123456']);
         $user->storeMeta(['bio' => 'some bio', 'dob' => '12-12-1990']);
         $user->deleteMeta(true);
-        
+
         $this->assertCount(0, $user->metas);
         $this->assertCount(0, $user->metas()->withTrashed()->get());
     }
 
-    
+
     /**
      * @test
      */
     #[Test]
-    public function parent_model_delete_force_delete_and_restore_will_refelect_on_metas() {
+    public function parent_model_delete_force_delete_and_restore_will_refelect_on_metas()
+    {
 
         $user = User::create(['email' => 'testuser1@test.com', 'password' => '123456']);
         $meta = $user->storeMeta(['bio' => 'some bio', 'dob' => '12-12-1990']);
@@ -223,7 +233,8 @@ class HasMetaTest extends TestCase {
      * @test
      */
     #[Test]
-    public function meta_record_will_not_sync_to_parent_model_state_if_instructed_so() {
+    public function meta_record_will_not_sync_to_parent_model_state_if_instructed_so()
+    {
 
         $profile = Profile::create(['first_name' => 'first', 'last_name' => 'last']);
         $meta = $profile->storeMeta(['bio' => 'some bio', 'dob' => '12-12-1990']);
@@ -238,29 +249,31 @@ class HasMetaTest extends TestCase {
      * @test
      */
     #[Test]
-    public function the_method_hasMeta_will_provide_if_parent_has_metas_associated() {
+    public function the_method_hasMeta_will_provide_if_parent_has_metas_associated()
+    {
 
         $user = User::create(['email' => 'testuser1@test.com', 'password' => '123456']);
         $meta = $user->storeMeta(['bio' => 'some bio', 'dob' => '12-12-1990']);
 
         $this->assertTrue($user->hasMeta());
 
-        $this->assertFalse((new Profile)->hasMeta());
+        $this->assertFalse((new Profile())->hasMeta());
     }
-    
+
 
     /**
      * @test
      */
     #[Test]
-    public function the_method_isMetaAssociated_will_return_bool_if_given_meta_field_association_found() {
+    public function the_method_isMetaAssociated_will_return_bool_if_given_meta_field_association_found()
+    {
 
         $user = User::create(['email' => 'testuser1@test.com', 'password' => '123456']);
         $meta = $user->storeMeta(['bio' => 'some bio', 'dob' => '12-12-1990']);
 
         $this->assertTrue($user->isMetaAssociated('bio'));
         $this->assertFalse($user->isMetaAssociated('name'));
-        $this->assertFalse((new Profile)->isMetaAssociated('bio'));
+        $this->assertFalse((new Profile())->isMetaAssociated('bio'));
     }
 
 
@@ -268,14 +281,15 @@ class HasMetaTest extends TestCase {
      * @test
      */
     #[Test]
-    public function the_method_isMetaAssociated_will_return_model_collection_if_given_meta_field_association_found() {
+    public function the_method_isMetaAssociated_will_return_model_collection_if_given_meta_field_association_found()
+    {
 
         $user = User::create(['email' => 'testuser1@test.com', 'password' => '123456']);
         $meta = $user->storeMeta(['bio' => 'some bio', 'dob' => '12-12-1990']);
 
         $this->assertInstanceOf(Collection::class, $user->isMetaAssociated('bio', false));
         $this->assertCount(1, $user->isMetaAssociated('bio', false));
-        $this->assertCount(0, (new Profile)->isMetaAssociated('bio', false));
+        $this->assertCount(0, (new Profile())->isMetaAssociated('bio', false));
     }
 
 
@@ -283,11 +297,12 @@ class HasMetaTest extends TestCase {
      * @test
      */
     #[Test]
-    public function the_method_metaValue_will_extrat_meta_field_value() {
+    public function the_method_metaValue_will_extrat_meta_field_value()
+    {
 
         $user = User::create(['email' => 'testuser1@test.com', 'password' => '123456']);
         $user->storeMeta(['bio' => 'bio', 'dob' => '12-12-1990']);
-        
+
         $this->assertEquals($user->metaValue('bio'), 'bio');
         $this->assertNull($user->metaValue('name'));
     }
@@ -297,7 +312,8 @@ class HasMetaTest extends TestCase {
      * @test
      */
     #[Test]
-    public function the_method_metaValue_will_extrat_all_meta_field_values_if_instructed_so() {
+    public function the_method_metaValue_will_extrat_all_meta_field_values_if_instructed_so()
+    {
 
         $user = User::create(['email' => 'testuser1@test.com', 'password' => '123456']);
         $user->storeMeta(['bio' => 'bio', 'dob' => '12-12-1990']);
@@ -312,7 +328,8 @@ class HasMetaTest extends TestCase {
      * @test
      */
     #[Test]
-    public function the_method_metaValue_will_return_null_if_none_found() {
+    public function the_method_metaValue_will_return_null_if_none_found()
+    {
 
         $user = User::create(['email' => 'testuser1@test.com', 'password' => '123456']);
         $user->storeMeta(['bio' => 'bio', 'dob' => '12-12-1990']);
@@ -325,7 +342,8 @@ class HasMetaTest extends TestCase {
      * @test
      */
     #[Test]
-    public function the_method_metaValue_will_return_empty_array_if_none_found_for_multiple_instructed() {
+    public function the_method_metaValue_will_return_empty_array_if_none_found_for_multiple_instructed()
+    {
 
         $user = User::create(['email' => 'testuser1@test.com', 'password' => '123456']);
         $user->storeMeta(['bio' => 'bio', 'dob' => '12-12-1990']);

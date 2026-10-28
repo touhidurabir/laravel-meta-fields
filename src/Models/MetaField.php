@@ -8,8 +8,8 @@ use Touhidurabir\MetaFields\Casts\MetaCast;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-class MetaField extends Model {
-
+class MetaField extends Model
+{
     use SoftDeletes;
 
     use HasUuid;
@@ -30,14 +30,15 @@ class MetaField extends Model {
     protected $casts = [
         'metas' => MetaCast::class,
     ];
-    
+
 
     /**
      * Get the model associated table name
      *
      * @return string
      */
-    public function getTable() {
+    public function getTable()
+    {
 
         return config('meta-field.table', parent::getTable());
     }
@@ -48,8 +49,9 @@ class MetaField extends Model {
      *
      * @return object<\Illuminate\Database\Eloquent\Relations\MorphTo>
      */
-    public function metable(): MorphTo {
-        
+    public function metable(): MorphTo
+    {
+
         return $this->morphTo();
     }
 

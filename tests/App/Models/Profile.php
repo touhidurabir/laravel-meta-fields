@@ -6,8 +6,8 @@ use Touhidurabir\MetaFields\HasMeta;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Profile extends Model {
-
+class Profile extends Model
+{
     use SoftDeletes;
 
     use HasMeta;
@@ -33,7 +33,8 @@ class Profile extends Model {
      *
      * @return bool
      */
-    public function canHaveMultipleMetas() {
+    public function canHaveMultipleMetas()
+    {
 
         return false;
     }
@@ -42,10 +43,11 @@ class Profile extends Model {
     /**
      * Define if the metas associated with a parent model sync with parents state
      * The sync up behaviour apply to parent's [delete, force delete and restore] events
-     * 
+     *
      * @return bool
      */
-    public function syncWithParent() {
+    public function syncWithParent()
+    {
 
         return false;
     }

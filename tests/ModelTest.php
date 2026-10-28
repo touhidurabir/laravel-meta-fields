@@ -4,19 +4,15 @@ namespace Touhidurabir\MetaFields\Tests;
 
 use PHPUnit\Framework\Attributes\Test;
 use Config;
-use Exception;
 use Orchestra\Testbench\TestCase;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Eloquent\Model;
 use Touhidurabir\MetaFields\Models\MetaField;
 use Touhidurabir\MetaFields\Tests\App\Models\User;
-use Touhidurabir\MetaFields\Tests\App\Models\Profile;
 use Touhidurabir\MetaFields\Tests\Traits\LaravelTestBootstrapping;
 
-
-class ModelTest extends TestCase {
-
+class ModelTest extends TestCase
+{
     use LaravelTestBootstrapping;
 
     /**
@@ -25,7 +21,8 @@ class ModelTest extends TestCase {
      * @param  Illuminate\Foundation\Application $app
      * @return void
      */
-    protected function defineEnvironment($app) {
+    protected function defineEnvironment($app)
+    {
 
         // Setup default database to use sqlite :memory:
         $app['config']->set('database.default', 'testbench');
@@ -47,15 +44,16 @@ class ModelTest extends TestCase {
      *
      * @return void
      */
-    protected function defineDatabaseMigrations() {
+    protected function defineDatabaseMigrations()
+    {
 
         include_once(__DIR__ . '/../database/migrations/create_meta_fields_table.php.stub');
 
         $this->loadMigrationsFrom(__DIR__ . '/App/database/migrations');
-        
+
         $this->artisan('migrate', ['--database' => 'testbench'])->run();
 
-        (new \CreateMetaFieldsTable)->up();
+        (new \CreateMetaFieldsTable())->up();
 
         $this->beforeApplicationDestroyed(function () {
             $this->artisan('migrate:rollback', ['--database' => 'testbench'])->run();
@@ -67,9 +65,10 @@ class ModelTest extends TestCase {
      * @test
      */
     #[Test]
-    public function the_model_can_be_initialsed() {
+    public function the_model_can_be_initialsed()
+    {
 
-        $metaField = new MetaField;
+        $metaField = new MetaField();
 
         $this->assertIsObject($metaField);
         $this->assertInstanceOf(Model::class, $metaField);
@@ -80,9 +79,10 @@ class ModelTest extends TestCase {
      * @test
      */
     #[Test]
-    public function the_model_will_point_to_proper_table() {
+    public function the_model_will_point_to_proper_table()
+    {
 
-        $metaField = new MetaField;
+        $metaField = new MetaField();
 
         $this->assertEquals($metaField->getTable(), config('meta-field.table'));
     }
@@ -92,11 +92,12 @@ class ModelTest extends TestCase {
      * @test
      */
     #[Test]
-    public function the_proper_meta_cast_will_be_applied() {
+    public function the_proper_meta_cast_will_be_applied()
+    {
 
         $user = User::create(['email' => 'testuser1@test.com', 'password' => '123456']);
         $meta = $user->storeMeta(['bio' => 'some bio', 'dob' => '12-12-1990']);
-        
+
         $this->assertInstanceOf(Collection::class, $meta->metas);
         $this->assertEquals($meta->metas->first()->bio, 'some bio');
     }
@@ -106,7 +107,8 @@ class ModelTest extends TestCase {
      * @test
      */
     #[Test]
-    public function the_proper_meta_cast_that_changed_via_config_will_be_applied() {
+    public function the_proper_meta_cast_that_changed_via_config_will_be_applied()
+    {
 
         $user = User::create(['email' => 'testuser1@test.com', 'password' => '123456']);
         $meta = $user->storeMeta(['bio' => 'some bio', 'dob' => '12-12-1990']);
@@ -114,7 +116,7 @@ class ModelTest extends TestCase {
         Config::set('meta-field.meta_retrieve_cast', 'object');
         $this->assertEquals(config('meta-field.meta_retrieve_cast'), 'object');
         $this->assertIsObject($meta->metas);
-        
+
         Config::set('meta-field.meta_retrieve_cast', 'array');
         $this->assertEquals(config('meta-field.meta_retrieve_cast'), 'array');
         $this->assertIsArray(($meta->refresh())->metas);

@@ -6,14 +6,15 @@ use Illuminate\Support\Collection;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\ServiceProvider;
 
-class MetaFieldsServiceProvider extends ServiceProvider {
-    
+class MetaFieldsServiceProvider extends ServiceProvider
+{
     /**
      * Bootstrap any application services.
      *
      * @return void
      */
-    public function boot() {
+    public function boot()
+    {
 
         $this->publishes([
             __DIR__.'/../config/meta-field.php' => base_path('config/meta-field.php'),
@@ -24,16 +25,18 @@ class MetaFieldsServiceProvider extends ServiceProvider {
         ], 'migrations');
     }
 
-    
+
     /**
      * Register any application services.
      *
      * @return void
      */
-    public function register() {
+    public function register()
+    {
 
         $this->mergeConfigFrom(
-            __DIR__.'/../config/meta-field.php', 'meta-field'
+            __DIR__.'/../config/meta-field.php',
+            'meta-field'
         );
 
     }
@@ -45,8 +48,9 @@ class MetaFieldsServiceProvider extends ServiceProvider {
      * @param  string $migrationFileName
      * @return string
      */
-    protected function getMigrationFileName($migrationFileName): string {
-        
+    protected function getMigrationFileName($migrationFileName): string
+    {
+
         $timestamp = date('Y_m_d_His');
 
         $filesystem = $this->app->make(Filesystem::class);

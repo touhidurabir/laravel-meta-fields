@@ -4,37 +4,37 @@ namespace Touhidurabir\MetaFields;
 
 use Exception;
 use ReflectionClass;
-use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
-trait HasMeta {
-
+trait HasMeta
+{
     /**
      * Handle associated metas on model delete, force delete or restore.
      *
      * @return void
      */
-	public static function bootHasMeta() {
+    public static function bootHasMeta()
+    {
 
         // Instantiate without the constructor, as newer Laravel versions forbid
         // constructing a model while it is still being booted.
         $self = (new ReflectionClass(self::class))->newInstanceWithoutConstructor();
 
-        if ( ! $self->syncWithParent() ) {
+        if (! $self->syncWithParent()) {
 
             return;
         }
 
-		static::deleted(function($model) {
+        static::deleted(function ($model) {
 
             $model->isForceDeleting() ? $model->metas()->forceDelete() : $model->metas()->delete();
         });
 
-        static::restored(function($model) {
+        static::restored(function ($model) {
 
             $model->metas()->withTrashed()->restore();
         });
-	}
+    }
 
 
     /**
@@ -42,8 +42,9 @@ trait HasMeta {
      *
      * @return object<\Illuminate\Database\Eloquent\Relations\MorphMany>
      */
-    public function metas(): MorphMany {
-        
+    public function metas(): MorphMany
+    {
+
         return $this->morphMany(config('meta-field.model'), 'metable');
     }
 
@@ -51,10 +52,11 @@ trait HasMeta {
     /**
      * Define if the metas associated with a parent model sync with parents state
      * The sync up behaviour apply to parent's [delete, force delete and restore] events
-     * 
+     *
      * @return bool
      */
-    public function syncWithParent() {
+    public function syncWithParent()
+    {
 
         return true;
     }
@@ -65,7 +67,8 @@ trait HasMeta {
      *
      * @return bool
      */
-    public function canHaveMultipleMetas() {
+    public function canHaveMultipleMetas()
+    {
 
         return true;
     }
@@ -78,15 +81,16 @@ trait HasMeta {
      * @param  array $metas
      * @return object
      */
-    public function storeMeta(array $metas) {
-        
-        if ( $this->canHaveMultipleMetas() ) {
+    public function storeMeta(array $metas)
+    {
+
+        if ($this->canHaveMultipleMetas()) {
 
             return $this->metas()->create([
                 'metas' => json_encode($metas)
             ]);
         }
-        
+
         return $this->metas()->updateOrCreate(
             ['metable_type' => get_class($this), 'metable_id' => $this->id],
             ['metas' => json_encode($metas)]
@@ -99,12 +103,13 @@ trait HasMeta {
      *
      * @param  array $metas
      * @return object
-     * 
+     *
      * @throws \Exception
      */
-    public function updateMeta(array $metas) {
+    public function updateMeta(array $metas)
+    {
 
-        if ( $this->canHaveMultipleMetas() ) {
+        if ($this->canHaveMultipleMetas()) {
 
             throw new Exception('can not use shortcut updateMeta method when model can have multiple meta records');
         }
@@ -119,11 +124,12 @@ trait HasMeta {
     /**
      * Delete metas of a model instance
      * The second argument define if this will be soft deleted or force deleted
-     * 
+     *
      * @param  bool $permanent
      * @return bool
      */
-    public function deleteMeta(bool $permanent = false) {
+    public function deleteMeta(bool $permanent = false)
+    {
 
         return $permanent ? $this->metas()->forceDelete() : $this->metas()->delete();
     }
@@ -134,7 +140,8 @@ trait HasMeta {
      *
      * @return bool
      */
-    public function hasMeta() {
+    public function hasMeta()
+    {
 
         return (bool)count($this->metas);
     }
@@ -145,14 +152,15 @@ trait HasMeta {
      *
      * @param  string   $field
      * @param  bool     $asBool
-     * 
+     *
      * @return mixed
      */
-    public function isMetaAssociated(string $field, bool $asBool = true) {
+    public function isMetaAssociated(string $field, bool $asBool = true)
+    {
 
-        if ( $this->hasMeta() ) {
+        if ($this->hasMeta()) {
 
-            $metas = $this->metas->filter(function($meta) use ($field) {
+            $metas = $this->metas->filter(function ($meta) use ($field) {
 
                 return collect(
                     json_decode($meta->getRawOriginal('metas'))
@@ -172,20 +180,21 @@ trait HasMeta {
      *
      * @param  string   $field
      * @param  bool     $all
-     * 
+     *
      * @return mixed
      */
-    public function metaValue(string $field, bool $all = false) {
+    public function metaValue(string $field, bool $all = false)
+    {
 
         $metas = $this->isMetaAssociated($field, false);
 
-        if ( ! (bool)$metas->count() ) {
+        if (! (bool)$metas->count()) {
 
             return null;
         }
-        
-        $values = $metas->map(function($meta) use ($field) {
-            
+
+        $values = $metas->map(function ($meta) use ($field) {
+
             return collect(
                 json_decode($meta->getRawOriginal('metas'))
             )[$field] ?? null;
@@ -193,5 +202,5 @@ trait HasMeta {
 
         return $all ? $values->filter()->toArray() : $values->first();
     }
-    
+
 }

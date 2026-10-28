@@ -6,8 +6,8 @@ use Touhidurabir\MetaFields\HasMeta;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class User extends Model {
-
+class User extends Model
+{
     use SoftDeletes;
 
     use HasMeta;
