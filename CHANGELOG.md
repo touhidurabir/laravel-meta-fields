@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 - Require `touhidurabir/laravel-model-uuid` `^1.2.0`, which contains the Laravel 12/13 boot fix.
 - Fixed `WithMetaFields` dropping Laravel Precognition rule filtering: precognitive requests now only validate the fields listed in `Precognition-Validate-Only`, like a plain `FormRequest`.
 - Declared the `illuminate/filesystem` dependency (used by the service provider) and suggested `laravel/framework` for the `WithMetaFields` form request trait.
+- README: documented that `syncWithParent()` overrides run on a model instance created without its constructor, so they must not rely on constructor state.
 
 
 ## [1.0.0] - 2021-09-27

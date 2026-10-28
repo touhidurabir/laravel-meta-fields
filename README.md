@@ -72,6 +72,8 @@ public function syncWithParent() {
 }
 ```
 
+> NOTE : **syncWithParent** is called once, while the model class boots, on an instance created without running the constructor (the model is not fully booted yet). An override must only return a fixed **true** or **false** (or read config). It must not rely on attributes, constructor logic or `initialize*` trait hooks.
+
 As metas are managed as **Polymorphic Relations** and use laravel's MorphMany relations, all models related functionality are availabel . But this package also provide some additional methods such .
 
 To Update, the **updateMeta** method such as : 
@@ -120,7 +122,7 @@ By default, it will only pass one single and first match value even if there is 
 
 ### Storing Metas and Validation
 
-To make the storing and validattion process of meta easier , this package provide another trait named **WithMetaFields** whcih can be used with the **FormRequest** class . This trait has as an abstract method **metaRules** that must be defined which will contains the validation rules for metas . The package will also use the field name defined in this methods to determine the meta fields . 
+To make the storing and validattion process of meta easier , this package provide another trait named **WithMetaFields** whcih can be used with the **FormRequest** class . The **FormRequest** class is part of the full `laravel/framework` package, so this trait is meant for Laravel applications . This trait has as an abstract method **metaRules** that must be defined which will contains the validation rules for metas . The package will also use the field name defined in this methods to determine the meta fields . 
 
 Use the trait in the **FormRequest** class as such : 
 
