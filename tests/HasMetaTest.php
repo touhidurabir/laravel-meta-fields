@@ -2,6 +2,7 @@
 
 namespace Touhidurabir\MetaFields\Tests;
 
+use PHPUnit\Framework\Attributes\Test;
 use Exception;
 use Orchestra\Testbench\TestCase;
 use Illuminate\Support\Collection;
@@ -64,6 +65,7 @@ class HasMetaTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_model_use_has_meta_will_have_metas_relation_exists() {
 
         $user = new User;
@@ -77,6 +79,7 @@ class HasMetaTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_storeMeta_will_push_meta_data_with_proper_relation_mapping() {
 
         $user = User::create(['email' => 'testuser1@test.com', 'password' => '123456']);
@@ -90,6 +93,7 @@ class HasMetaTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_storeMeta_will_push_multiple_meta_data_if_allowed() {
 
         $user = User::create(['email' => 'testuser1@test.com', 'password' => '123456']);
@@ -103,6 +107,7 @@ class HasMetaTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_storeMeta_will_not_push_multiple_meta_data_if_not_allowed() {
 
         $profile = Profile::create(['first_name' => 'first', 'last_name' => 'last']);
@@ -119,6 +124,7 @@ class HasMetaTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_storeMeta_will_update_existing_one_on_multipe_call_if_multipe_not_allowed() {
 
         $profile = Profile::create(['first_name' => 'first', 'last_name' => 'last']);
@@ -133,6 +139,7 @@ class HasMetaTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_updateMeta_will_throw_exception_if_multiple_allowed() {
 
         $user = User::create(['email' => 'testuser1@test.com', 'password' => '123456']);
@@ -146,6 +153,7 @@ class HasMetaTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_updateMeta_will_update_or_create_if_multipe_now_allowed() {
 
         $profile = Profile::create(['first_name' => 'first', 'last_name' => 'last']);
@@ -164,6 +172,7 @@ class HasMetaTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_deleteMeta_will_delete_meta_as_soft_delete() {
 
         $user = User::create(['email' => 'testuser1@test.com', 'password' => '123456']);
@@ -178,6 +187,7 @@ class HasMetaTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_deleteMeta_will_force_delete_metas_if_instructed_so() {
 
         $user = User::create(['email' => 'testuser1@test.com', 'password' => '123456']);
@@ -192,6 +202,7 @@ class HasMetaTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function parent_model_delete_force_delete_and_restore_will_refelect_on_metas() {
 
         $user = User::create(['email' => 'testuser1@test.com', 'password' => '123456']);
@@ -211,6 +222,7 @@ class HasMetaTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function meta_record_will_not_sync_to_parent_model_state_if_instructed_so() {
 
         $profile = Profile::create(['first_name' => 'first', 'last_name' => 'last']);
@@ -225,6 +237,7 @@ class HasMetaTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_method_hasMeta_will_provide_if_parent_has_metas_associated() {
 
         $user = User::create(['email' => 'testuser1@test.com', 'password' => '123456']);
@@ -239,6 +252,7 @@ class HasMetaTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_method_isMetaAssociated_will_return_bool_if_given_meta_field_association_found() {
 
         $user = User::create(['email' => 'testuser1@test.com', 'password' => '123456']);
@@ -253,6 +267,7 @@ class HasMetaTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_method_isMetaAssociated_will_return_model_collection_if_given_meta_field_association_found() {
 
         $user = User::create(['email' => 'testuser1@test.com', 'password' => '123456']);
@@ -267,6 +282,7 @@ class HasMetaTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_method_metaValue_will_extrat_meta_field_value() {
 
         $user = User::create(['email' => 'testuser1@test.com', 'password' => '123456']);
@@ -280,6 +296,7 @@ class HasMetaTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_method_metaValue_will_extrat_all_meta_field_values_if_instructed_so() {
 
         $user = User::create(['email' => 'testuser1@test.com', 'password' => '123456']);
@@ -294,6 +311,7 @@ class HasMetaTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_method_metaValue_will_return_null_if_none_found() {
 
         $user = User::create(['email' => 'testuser1@test.com', 'password' => '123456']);
@@ -306,6 +324,7 @@ class HasMetaTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_method_metaValue_will_return_empty_array_if_none_found_for_multiple_instructed() {
 
         $user = User::create(['email' => 'testuser1@test.com', 'password' => '123456']);

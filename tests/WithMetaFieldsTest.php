@@ -2,6 +2,7 @@
 
 namespace Touhidurabir\MetaFields\Tests;
 
+use PHPUnit\Framework\Attributes\Test;
 use Illuminate\Http\Request;
 use Orchestra\Testbench\TestCase;
 use Illuminate\Support\Collection;
@@ -80,6 +81,7 @@ class WithMetaFieldsTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_validation_will_failed_with_invalid_meta_data() {
 
         $this
@@ -104,6 +106,7 @@ class WithMetaFieldsTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_post_request_will_pass_with_proper_meta_data() {
 
         $this->postJson("/users", [
@@ -117,6 +120,7 @@ class WithMetaFieldsTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_metas_can_be_retrived_from_request() {
 
         $this
@@ -148,6 +152,7 @@ class WithMetaFieldsTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function it_will_omit_those_that_are_not_defined_in_meta_rules() {
 
         $this

@@ -2,6 +2,7 @@
 
 namespace Touhidurabir\MetaFields\Tests;
 
+use PHPUnit\Framework\Attributes\Test;
 use Exception;
 use Orchestra\Testbench\TestCase;
 use Illuminate\Support\Collection;
@@ -19,6 +20,7 @@ class DatabaseTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_meta_field_table_in_config_will_run_via_migration() {
 
         include_once(__DIR__ . '/../database/migrations/create_meta_fields_table.php.stub');
@@ -32,6 +34,7 @@ class DatabaseTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_meta_field_table_can_be_rolled_back() {
 
         include_once(__DIR__ . '/../database/migrations/create_meta_fields_table.php.stub');
@@ -47,6 +50,7 @@ class DatabaseTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_migration_will_throw_exception_if_defined_config_table_already_exists() {
 
         include_once(__DIR__ . '/../database/migrations/create_meta_fields_table.php.stub');

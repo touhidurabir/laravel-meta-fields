@@ -3,6 +3,7 @@
 namespace Touhidurabir\MetaFields;
 
 use Exception;
+use ReflectionClass;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
@@ -15,7 +16,9 @@ trait HasMeta {
      */
 	public static function bootHasMeta() {
 
-        $self = new self;
+        // Instantiate without the constructor, as newer Laravel versions forbid
+        // constructing a model while it is still being booted.
+        $self = (new ReflectionClass(self::class))->newInstanceWithoutConstructor();
 
         if ( ! $self->syncWithParent() ) {
 

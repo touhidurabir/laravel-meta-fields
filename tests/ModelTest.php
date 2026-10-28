@@ -2,6 +2,7 @@
 
 namespace Touhidurabir\MetaFields\Tests;
 
+use PHPUnit\Framework\Attributes\Test;
 use Config;
 use Exception;
 use Orchestra\Testbench\TestCase;
@@ -65,6 +66,7 @@ class ModelTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_model_can_be_initialsed() {
 
         $metaField = new MetaField;
@@ -77,6 +79,7 @@ class ModelTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_model_will_point_to_proper_table() {
 
         $metaField = new MetaField;
@@ -88,6 +91,7 @@ class ModelTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_proper_meta_cast_will_be_applied() {
 
         $user = User::create(['email' => 'testuser1@test.com', 'password' => '123456']);
@@ -101,6 +105,7 @@ class ModelTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_proper_meta_cast_that_changed_via_config_will_be_applied() {
 
         $user = User::create(['email' => 'testuser1@test.com', 'password' => '123456']);
