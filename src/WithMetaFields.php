@@ -65,12 +65,22 @@ trait WithMetaFields
     protected function createDefaultValidator(ValidationFactory $factory)
     {
 
-        return $factory->make(
+        $validator = $factory->make(
             $this->validationData(),
             $this->container->call([$this, 'getRules']),
             $this->messages(),
             $this->attributes()
         )->stopOnFirstFailure($this->stopOnFirstFailure);
+
+        // precognitive requests (Laravel 9.x+) only validate the requested fields
+        if (method_exists($this, 'isPrecognitive') && $this->isPrecognitive()) {
+
+            $validator->setRules(
+                $this->filterPrecognitiveRules($validator->getRulesWithoutPlaceholders())
+            );
+        }
+
+        return $validator;
     }
 
 }
