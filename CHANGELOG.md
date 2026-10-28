@@ -2,6 +2,16 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+
+
+## [1.0.0] - 2021-09-27
+- Initial release
+
+## [1.0.1] - 2021-10-18
+- README Update
+- Bug Fix
+
+## [1.1.0] - 2026-10-28
 - Laravel 11, 12 and 13 support added.
 - PHPUnit 10, 11 and 12 support for tests; test methods now use `#[Test]` attributes alongside the `@test` annotations.
 - Fixed `HasMeta` boot method instantiating the model while it is being booted, which throws a `LogicException` on newer Laravel versions.
@@ -12,11 +22,3 @@ All notable changes to this project will be documented in this file.
 - Fixed `WithMetaFields` dropping Laravel Precognition rule filtering: precognitive requests now only validate the fields listed in `Precognition-Validate-Only`, like a plain `FormRequest`.
 - Declared the `illuminate/filesystem` dependency (used by the service provider) and suggested `laravel/framework` for the `WithMetaFields` form request trait.
 - README: documented that `syncWithParent()` overrides run on a model instance created without its constructor, so they must not rely on constructor state.
-
-
-## [1.0.0] - 2021-09-27
-- Initial release
-
-## [1.0.1] - 2021-10-18
-- README Update
-- Bug Fix
