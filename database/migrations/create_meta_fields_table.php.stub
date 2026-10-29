@@ -19,7 +19,7 @@ class CreateMetaFieldsTable extends Migration {
 
         if ( Schema::hasTable($tableName) ) {
 
-            throw new \Exception("Error: a table of name {$table} already exists in database.");
+            throw new \Exception("Error: a table of name {$tableName} already exists in database.");
         }
 
         Schema::create($tableName, function (Blueprint $table) {

@@ -7,7 +7,7 @@ return [
     | The meta field table name
     |--------------------------------------------------------------------------
     |
-    | The meta field table name where the model associated meta data will be 
+    | The meta field table name where the model associated meta data will be
     | stored.
     |
     */
@@ -32,10 +32,10 @@ return [
     | The Meta table's metas column default cast
     |--------------------------------------------------------------------------
     |
-    | This define in which format the metas from the meta fields table will be 
+    | This define in which format the metas from the meta fields table will be
     | casted to at the retrieve time .
-    | 
-    | The only allowed options are ['array', 'object', 'collection']. 
+    |
+    | The only allowed options are ['array', 'object', 'collection'].
     |
     | By default it is set to retrieved the details in the json string format.
     |

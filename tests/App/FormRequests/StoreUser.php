@@ -5,8 +5,8 @@ namespace Touhidurabir\MetaFields\Tests\App\FormRequests;
 use Illuminate\Foundation\Http\FormRequest;
 use Touhidurabir\MetaFields\WithMetaFields;
 
-class StoreUser extends FormRequest {
-
+class StoreUser extends FormRequest
+{
     use WithMetaFields;
 
     /**
@@ -14,18 +14,20 @@ class StoreUser extends FormRequest {
      *
      * @return bool
      */
-    public function authorize() {
+    public function authorize()
+    {
 
         return true;
     }
-    
+
 
     /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
-    public function rules() {
+    public function rules()
+    {
 
         return [
             'email' => [
@@ -47,7 +49,8 @@ class StoreUser extends FormRequest {
      *
      * @return array
      */
-    public function metaRules() : array {
+    public function metaRules(): array
+    {
 
         return [
             'bio' => [
